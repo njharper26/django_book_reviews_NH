@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+        <title>Add Book & Review</title>
+    </head>
+    <body>
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+            <p class="{{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+        <br>
+        <div class="row justify-content-end">
+            <div class="col-3">
+                <a href="/books">Home</a>
+                <a href="/logout">Logout</a>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-9">
+                <h4>Add a New Book Title and Review:</h4>
+                <br>
+                <form action="/process/add" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="user_id" value="{{ request.session.id }}">
+                    <div class="form-group">
+                        <label for="input_title">Title:</label>
+                        <input type="text" class="form-control" id="input_title" name="title" placeholder="Enter Book Title">
+                    </div>
+                    <div class="form-group">
+                        <label for="select_author">Select an Existing Authors:</label>
+                        <select multiple class="form-control" id="select_author" name="author_exist">
+                            {% for author in authors %}
+                            <option value="{{ author.name }}">{{ author.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="input_author">Add a New Author:</label>
+                        <input type="text" class="form-control" id="input_author" name="author_new" placeholder="Enter Author Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="input_review">Review:</label>
+                        <textarea class="form-control" id="input_review" rows="7" name="review"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="select_rating">Rating:</label>
+                        <select class="form-control" id="select_rating" name="rating">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Book Review</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    </body>
+</html>

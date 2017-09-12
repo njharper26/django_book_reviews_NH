@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+        <title>Reviews</title>
+    </head>
+    <body>
+    <div class="container-fluid">
+        {% if messages %}
+            {% for message in messages %}
+            <p class="{{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+        <br>
+        <div class="row justify-content-around">
+            <div class="col-8">
+                <h2>{{ book.title }}</h3>
+                <h4 class="font-italic">{{ book.author }}</h5>
+            </div>
+            <div class="col-2">
+                <div class="nav">
+                    <a class="nav-link" href="/books">Home</a>
+                    <a class="nav-link" href="/logout">Logout</a>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="row justify-content-around">
+            <div class="col-5">
+                <h3>Reviews...</h3>
+                <br>
+                {% for review in reviews %}
+                <div class="w-100 p-2 border border-dark border-right-0 border-bottom-0 border-left-0">
+                    <p>Rating: {{ review.rating }} stars</p>
+                    <p class="text-justify"><a href="/user/{{ review.reviewed_by.id }}">{{ review.reviewed_by.username }}</a> Says: {{ review.review }}</p>
+                    <p class="font-italic">{{ review.created_at }}</p>
+                </div>
+                <br>
+                {% endfor %}
+            </div>
+            <div class="col-5">
+                <h4>Add Another Review:</h4>
+                <form action="/process/review/{{ book.id }}" method="POST">
+                    {% csrf_token %} 
+                    <input type="hidden" name="user_id" value="{{ request.session.id }}">
+                    <input type="hidden" name="book_id" value="{{ book.id }}">
+                    <div class="form-group">
+                        <label for="input_review">Review:</label>
+                        <textarea class="form-control" id="input_review" rows="7" name="review"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="select_rating">Rating:</label>
+                        <select class="form-control" id="select_rating" name="rating">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary">Add Book Review</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    </body>
+</html>

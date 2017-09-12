@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+        <title>Reviews Home</title>
+    </head>
+    <body>
+    <div class="container-fluid">
+        {% if messages %}
+            {% for message in messages %}
+            <p class="{{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+        <br>
+        <div class="row justify-content-around">
+            <div class="col-7">
+                <h2>Welcome, {{ user.name }}</h2>
+            </div>
+            <div class="col-3">
+                <div class="nav">
+                    <a class="nav-link" href="/books/add">Add a Book Review</a>
+                    <a class="nav-link" href="/logout">Logout</a>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="row justify-content-around">
+            <div class="col-5">
+                <h3>Recent Book Reviews</h3>
+                <br>
+                {% for review in recent_reviews %}
+                <div class="w-100 p-2 border border-dark border-right-0 border-bottom-0 border-left-0">
+                    <a href="/books/{{ review.book.id }}"><h4>{{ review.book.title }}</h4></a>
+                    <p>Rating: {{ review.rating }} stars</p>
+                    <p class="text-justify"><a href="/user/{{ review.reviewed_by.id }}">{{ review.reviewed_by.username }}</a> Says: {{ review.review }}</p>
+                    <p class="font-italic">{{ review.created_at }}</p>
+                </div>
+                <br>
+                {% endfor %}
+            </div>
+            <div class="col-5">
+                <h3>Other Book Reviews</h3>             
+                <br>
+                <ul class="list-group list-group-flush" style="max-height: 300px; overflow-y: scroll;">
+                    {% for review in old_reviews %}
+                    <li class="list-group-item"><a href="/books/{{ review.book.id }}">{{ review.book.title }} by {{ review.book.author.name }}</a></li>
+                    {% endfor %}
+                </ul>              
+            </div>
+        </div> 
+    </div>
+    </body>
+</html>
